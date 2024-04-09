@@ -10,7 +10,7 @@
 #define IMAGE_HEIGHT 800
 #define RADIUS 8
 #define NUM_BODIES 300
-#define MAX_VELOCITY 15
+#define MAX_VELOCITY 30
 #define DT 0.1
 #define R_repulsion 15
 #define R_orientation 64

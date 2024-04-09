@@ -1,74 +1,90 @@
-/* Set Window and a few window attributes
- * If you compile and run this you should see an
- * uninitialized Window.
- * 
- */
-
-/* DEFINED PROGRESS GOALS
- * 
- * Initialize SDL2
- * Bring Window up
- * 
- */
-
-#include <stdlib.h>
-
-// on Linux we usually include SDL2 like this
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "test.h" 
 
-// typedef'ed struct from SDL_video
-/* Declare a a pointer to struct surface which holds a bitmap
- * and Metadata, the struct is declared in SDL_surface.h
- */
-SDL_Window   *Window;
+#define IMAGE_WIDTH 1200
+#define IMAGE_HEIGHT 800
 
-int main(int argc, char *argv[])
-{
+// Window
+void render(SDL_Renderer *renderer) {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
 
-// silence compiler warnings about unused vars
-(void)argc;
-(void)argv;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_Rect rect = { 400, 400, 10, 10 };
+	SDL_RenderFillRect(renderer, &rect);
+	// SDL_RenderCopy(renderer, *texture, NULL, &rect);
+	// SDL_RenderCopyEx(renderer, *texture, NULL, &destRect, angle, NULL, SDL_FLIP_NONE);
 
-// https://wiki.libsdl.org/SDL_Init
-// video subsystem; automatically initializes the events subsystem
-SDL_Init(SDL_INIT_VIDEO);
 
-// https://wiki.libsdl.org/SDL_WindowFlags
-// going to hide everything until all set
-Window = SDL_CreateWindow("", 0, 0, 0, 0, SDL_WINDOW_HIDDEN);
-SDL_SetWindowSize(Window,800,800);
-SDL_SetWindowTitle(Window, "Window");
-SDL_ShowWindow(Window);
-SDL_SetWindowPosition(Window,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED);
-
-// Don't bother about the events atm. We gonna get there
-SDL_Event event;
-
-// Setting the loop condition
-int running=1;
-
-// starting loop that catches the quit event if you press the closing button
-while(running){
-
-	// consume events
-	while(SDL_PollEvent(&event)){
-		if(event.type == SDL_QUIT){
-			running=0;
-		}
-	}
-	SDL_Delay(16);
-
+    SDL_RenderPresent(renderer);
 }
 
-// Need to clean up before we exit
+// void loadTexture(SDL_Renderer *renderer, SDL_Texture **texture) {
+//    SDL_Surface *surface = IMG_Load( "/mnt/c/Users/guill/workspace/IN104/fish_bitmap.png");
+//     if (surface == NULL) {
+//         fprintf(stderr, "Failed to load image: %s\n", IMG_GetError());
+//         SDL_Quit();
+//         exit(1);
+//     }
+//     *texture = SDL_CreateTextureFromSurface(renderer, surface);
+//     SDL_FreeSurface(surface);
 
-// https://wiki.libsdl.org/SDL_DestroyWindow
-SDL_DestroyWindow(Window);
+//     if (*texture == NULL) {
+//         fprintf(stderr, "Failed to create texture: %s\n", SDL_GetError());
+//         SDL_Quit();
+//         exit(1);
+//     }
+// }
 
-// https://wiki.libsdl.org/SDL_Quit
-// Use this function to clean up all initialized subsystems.
-SDL_Quit();
+int main() {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fprintf(stderr, "SDL initialization failed: %s\n", SDL_GetError());
+        return 1;
+    }
 
-return EXIT_SUCCESS;
+    SDL_Window *window = SDL_CreateWindow("N-Body Simulation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, IMAGE_WIDTH, IMAGE_HEIGHT, SDL_WINDOW_SHOWN);
+    if (window == NULL) {
+        fprintf(stderr, "Window creation failed: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
 
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL) {
+        fprintf(stderr, "Renderer creation failed: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+    // SDL_Texture *texture;
+    // loadTexture(renderer, &texture); // Replace "particle.png" with your image file
+
+
+    SDL_Event event;
+    int quit = 0;
+    while (!quit) {
+        while (SDL_PollEvent(&event) != 0) {
+            if (event.type == SDL_QUIT) {
+                quit = 1;
+            }
+        }
+        
+		add_2(5,6);
+		Body *bodies;
+
+        // Render the updated positions
+        render(renderer);
+
+        // Delay to control the frame rate
+        // SDL_Delay(1);
+    }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return 0;
 }
