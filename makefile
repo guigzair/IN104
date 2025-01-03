@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g 
-LDFLAGS = -lSDL2 -lm -lSDL2_image test.c
+LDFLAGS = -lSDL2 -lm -lSDL2_image 
 SRC = simulation.c
 EXECUTABLE = output
 
