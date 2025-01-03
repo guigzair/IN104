@@ -1,5 +1,5 @@
 # School of fish N-body simulation in C
-    This project builds upon the work of Couzin, Iain D., et al. "Collective memory and spatial sorting in animal groups.". It represents a self-organizing model of group formation in two-dimensional space, and use it to investigate the spatial dynamics of animal groups such as fish schools. 
+This project builds upon the work of Couzin, Iain D., et al. "Collective memory and spatial sorting in animal groups.". It represents a self-organizing model of group formation in two-dimensional space, and use it to investigate the spatial dynamics of animal groups such as fish schools. 
 
 ![alt text](PDF/capture.png "Title")
 
