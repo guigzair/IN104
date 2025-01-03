@@ -72,8 +72,8 @@ int main() {
             }
         }
         
-		add_2(5,6);
-		Body *bodies;
+		// add_2(5,6);
+		// Body *bodies;
 
         // Render the updated positions
         render(renderer);
